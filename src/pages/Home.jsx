@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import qs from 'qs'; // для генерации url
+import { useNavigate } from 'react-router-dom';
 
 import Categories from '../components/Categories';
 import Sort from '../components/Sort';
@@ -9,49 +11,37 @@ import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { setCategoryId } from '../redux/slices/filterSlice';
+import { setCategoryId, setPageCurrent } from '../redux/slices/filterSlice';
 
 const Home = () => {
-	// Redux
-	// Данные из хранилища redux
-	const categoryActiveId = useSelector((state) => state.filterSlice.categoryId);
-	const sortActiveId = useSelector((state) => state.filterSlice.sortList.sortProperty);
+	const navigate = useNavigate();
+	// REDUX
+	// Данные из хранилища REDUX
+	const { categoryId, sortSlice, pageCurrent } = useSelector((state) => state.filterSlice);
 	// посредник вызова функции
 	const dispatch = useDispatch();
 
 	const [dataPizzas, setDataPizzas] = React.useState([]);
 	const [isLoading, setIsLoading] = React.useState(true);
 
-	const [currentPage, setCurrentPage] = React.useState(1);
-
 	const [toggleOrderSort, setToggleOrderSort] = React.useState(false);
 	const { searchValue } = React.useContext(SearchContext);
 
 	// Запрос на BACK END
-	const categoryUrl = categoryActiveId > 0 ? `category=${categoryActiveId}` : '';
+	const categoryUrl = categoryId > 0 ? `category=${categoryId}` : '';
 	const ascOrDescUrl = toggleOrderSort === true ? 'asc' : 'desc';
 	const searchUrl = searchValue ? `&search=${searchValue}` : ''; // фильтрация с URL адрессом
 	React.useEffect(() => {
-		/* 		fetch(
-			`https://633e73820dbc3309f3b5d032.mockapi.io/photo_collections?page=${currentPage}&limit=4&${categoryUrl}&sortBy=${sortActiveId}&order=${ascOrDescUrl}${searchUrl}`
-		)
-			.then((response) => {
-				return response.json(); // конвертация ответа в json
-			})
-			.then((json) => {
-				setDataPizzas(json);
-				setIsLoading(false);
-			}); */
 		setIsLoading(true); // при каждом запросе на бэк - появление скелетона
 		axios
 			.get(
-				`https://633e73820dbc3309f3b5d032.mockapi.io/photo_collections?page=${currentPage}&limit=4&${categoryUrl}&sortBy=${sortActiveId}&order=${ascOrDescUrl}${searchUrl}`
+				`https://633e73820dbc3309f3b5d032.mockapi.io/photo_collections?page=${pageCurrent}&limit=4&${categoryUrl}&sortBy=${sortSlice.sortProperty}&order=${ascOrDescUrl}${searchUrl}`
 			)
 			.then((response) => {
 				setDataPizzas(response.data);
 				setIsLoading(false);
 			});
-	}, [categoryActiveId, sortActiveId, toggleOrderSort, searchValue, currentPage, categoryUrl, ascOrDescUrl, searchUrl]); //  [] - вызвать только один раз / [dataPizzas] - если это изменится, то снова вызов useEffect()
+	}, [categoryId, toggleOrderSort, searchValue, pageCurrent, categoryUrl, ascOrDescUrl, searchUrl, sortSlice]); //  [] - вызвать только один раз / [dataPizzas] - если это изменится, то снова вызов useEffect()
 	// /.Запрос на BACK END
 
 	const dataPizzasComplete = dataPizzas.map((item, index) => (
@@ -70,7 +60,7 @@ const Home = () => {
 	return (
 		<div className="container">
 			<div className="content__top">
-				<Categories categoryActiveId={categoryActiveId} onChangeCategory={(id) => dispatch(setCategoryId(id))} />
+				<Categories categoryActiveId={categoryId} onChangeCategory={(id) => dispatch(setCategoryId(id))} />
 				<Sort toggleOrderSort={toggleOrderSort} setToggleOrderSort={setToggleOrderSort} />
 			</div>
 
@@ -83,7 +73,7 @@ const Home = () => {
 					: //
 					  dataPizzasComplete}
 			</div>
-			<Pagination onChangePage={(number) => setCurrentPage(number)} />
+			<Pagination pageCurrent={pageCurrent} onChangePage={(number) => dispatch(setPageCurrent(number))} />
 		</div>
 	);
 };

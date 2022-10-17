@@ -1,18 +1,34 @@
-import React from 'react';
-import { SearchContext } from '../../App';
+import React, { useCallback } from 'react';
+import debounce from 'lodash.debounce'; // интервальное обновление страницы при поиске
+
 import styles from './Search.module.scss';
 
+import { SearchContext } from '../../App';
+
 const Search = () => {
-	// Контекст
-	const { searchValue, setSearchValue } = React.useContext(SearchContext);
+	const { setSearchValue } = React.useContext(SearchContext); // Достаю данные из контекста
 
-	const inputRef = React.useRef();
+	const [valueInput, setValueInput] = React.useState(''); // Локальный стейт для вводимых данных в инпут
+	// useCallback позволяет сохранить функцию и не перевызывать ее
+	const updateSearchValue = useCallback(
+		debounce((str) => {
+			setSearchValue(str);
+		}, 500),
+		[] // это позволяет создать ф-ю только раз, при первом рендере
+	);
 
-	const onClickClearFocus = () => {
-		setSearchValue('');
+	const onChangeInput = (event) => {
+		setValueInput(event.target.value);
+		updateSearchValue(event.target.value);
 	};
 
-	console.log(inputRef);
+	// Очистка поля
+	const inputRef = React.useRef();
+	const onClickClear = () => {
+		setValueInput('');
+		setSearchValue('');
+		inputRef.current.focus(); // фокус после удаления
+	};
 
 	return (
 		<div className={styles.root}>
@@ -33,16 +49,16 @@ const Search = () => {
 
 			<input
 				ref={inputRef}
-				value={searchValue}
-				onChange={(event) => setSearchValue(event.target.value)}
+				value={valueInput}
+				onChange={onChangeInput}
 				className={styles.input}
 				placeholder="Поиск пиццы..."
 			/>
 
 			{/* Крестик */}
-			{searchValue && (
+			{valueInput && (
 				<svg
-					onClick={() => onClickClearFocus()}
+					onClick={() => onClickClear()}
 					className={styles.clearIcon}
 					height="48"
 					viewBox="0 0 48 48"

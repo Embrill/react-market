@@ -4,7 +4,7 @@ import styles from './Sort.module.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort } from '../../redux/slices/filterSlice';
 
-const sortList = [
+export const sortList = [
 	{ name: 'Популярности', sortProperty: 'rating' },
 	{ name: 'Цене', sortProperty: 'price' },
 	{ name: 'Алфавиту', sortProperty: 'title' },
@@ -12,7 +12,7 @@ const sortList = [
 
 const Sort = ({ toggleOrderSort, setToggleOrderSort }) => {
 	const dispatch = useDispatch();
-	const sort = useSelector((state) => state.filterSlice.sortList);
+	const sortSlice = useSelector((state) => state.filterSlice.sortSlice);
 
 	const [visibleSortPopup, setVisibleSortPopup] = React.useState(false);
 
@@ -34,7 +34,7 @@ const Sort = ({ toggleOrderSort, setToggleOrderSort }) => {
 					</svg>
 				</div>
 				<b>Сортировать по:</b>
-				<span onClick={() => setVisibleSortPopup(!visibleSortPopup)}>{sort.name}</span>
+				<span onClick={() => setVisibleSortPopup(!visibleSortPopup)}>{sortSlice.name}</span>
 			</div>
 
 			{/* popup */}
@@ -45,7 +45,7 @@ const Sort = ({ toggleOrderSort, setToggleOrderSort }) => {
 							<li
 								key={index}
 								onClick={() => setSortAndClose(obj)}
-								className={sort.sortProperty === obj.sortProperty ? 'active' : ''}
+								className={sortSlice.sortProperty === obj.sortProperty ? 'active' : ''}
 							>
 								{obj.name}
 							</li>
