@@ -1,0 +1,33 @@
+.root {
+	li {
+		display: inline-block;
+
+		a {
+			display: block;
+			text-align: center;
+			width: 46px;
+			line-height: 42px;
+			height: 46px;
+			margin-right: 10px;
+			border: 1px solid #fe5f1e;
+			border-radius: 30px;
+			cursor: pointer;
+			color: #fe5f1e;
+			transition: background-color 0.1s ease;
+			&:hover {
+				background-color: #fe5f1e;
+				color: rgb(231, 231, 231);
+			}
+		}
+	}
+
+	// Доступ к нативному классу в библиотеке
+	:global {
+		.selected {
+			a {
+				background-color: #fe5f1e;
+				color: #fff;
+			}
+		}
+	}
+}

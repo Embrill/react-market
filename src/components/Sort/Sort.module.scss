@@ -1,0 +1,15 @@
+.arrowUp {
+	transform: rotate(0deg);
+	transition: fill 0.3s ease;
+	&:hover {
+		fill: #fe5f1e;
+	}
+}
+
+.arrowDown {
+	transform: rotate(180deg) translate(-100%, -100%);
+	transition: fill 0.3s ease;
+	&:hover {
+		fill: #fe5f1e;
+	}
+}
