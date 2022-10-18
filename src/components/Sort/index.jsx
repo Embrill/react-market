@@ -13,6 +13,7 @@ export const sortList = [
 const Sort = ({ toggleOrderSort, setToggleOrderSort }) => {
 	const dispatch = useDispatch();
 	const sortSlice = useSelector((state) => state.filterSlice.sortSlice);
+	const sortRef = React.useRef();
 
 	const [visibleSortPopup, setVisibleSortPopup] = React.useState(false);
 
@@ -21,8 +22,24 @@ const Sort = ({ toggleOrderSort, setToggleOrderSort }) => {
 		setVisibleSortPopup(false);
 	};
 
+	// Скрытие попапа при клике на body
+	React.useEffect(() => {
+		// Функция закрытия попапа при клике на body
+		const handleClickOutside = (event) => {
+			!event.path.includes(sortRef.current) && setVisibleSortPopup(false);
+		};
+
+		// Прослушка клика на бади с функцией handleClickOutside
+		document.body.addEventListener('click', handleClickOutside);
+
+		// Удаление прослушки при переходе на другой page
+		return () => {
+			document.body.removeEventListener('click', handleClickOutside);
+		};
+	}, []);
+
 	return (
-		<div className="sort">
+		<div ref={sortRef} className="sort">
 			<div className="sort__label label-sort">
 				<div className="sort__arrow" onClick={() => setToggleOrderSort(!toggleOrderSort)}>
 					<svg width="20" height="12" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
