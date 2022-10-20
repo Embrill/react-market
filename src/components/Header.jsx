@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux';
 
 import logoSvg from '../assets/img/pizza-logo.svg';
 import Search from './Search';
+import { selectorCart } from '../redux/slices/cartSlice';
 
 const Header = () => {
-	const { items, totalPrice } = useSelector((state) => state.cartSlice);
+	const { items, totalPrice } = useSelector(selectorCart); // selectorCart - селектор для сокращения кода
+
+	const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
 	return (
 		<div className="header">
@@ -48,7 +51,7 @@ const Header = () => {
 								strokeLinejoin="round"
 							/>
 						</svg>
-						<span>{items.length}</span> {/* Количество товара в корзине */}
+						<span>{totalCount}</span> {/* Количество товара в корзине */}
 					</Link>
 				</div>
 			</div>

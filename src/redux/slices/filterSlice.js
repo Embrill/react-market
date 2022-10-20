@@ -8,6 +8,8 @@ const initialState = {
 		sortProperty: 'rating',
 	},
 	pageCurrent: 1,
+	// Сортировка по возрастанию или убыванию
+	sortOrder: false,
 };
 
 const filterSlice = createSlice({
@@ -25,9 +27,15 @@ const filterSlice = createSlice({
 		setPageCurrent: (state, action) => {
 			state.pageCurrent = action.payload;
 		},
+		setSortOrder: (state, action) => {
+			state.sortOrder = action.payload;
+		},
 	},
 });
 
-export const { setCategoryId, setSort, setPageCurrent } = filterSlice.actions;
+// Селектор
+export const selectorFilter = (state) => state.filterSlice;
+
+export const { setCategoryId, setSort, setPageCurrent, setSortOrder } = filterSlice.actions;
 
 export default filterSlice.reducer;

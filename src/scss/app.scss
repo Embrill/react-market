@@ -53,6 +53,21 @@ body {
 			grid-template-columns: repeat(1, 1fr);
 		}
 	}
+	&__error-info {
+		margin: 60px auto;
+		max-width: 500px;
+		widows: 100%;
+
+		h2 {
+			font-size: 38px;
+			text-align: center;
+		}
+		p {
+			text-align: center;
+			margin-top: 22px;
+			font-size: 24px;
+		}
+	}
 
 	&__top {
 		display: flex;
