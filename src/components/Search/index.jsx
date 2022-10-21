@@ -3,20 +3,22 @@ import debounce from 'lodash.debounce'; // интервальное обновл
 
 import styles from './Search.module.scss';
 
-import { SearchContext } from '../../App';
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 
 const Search = () => {
-	const { setSearchValue } = React.useContext(SearchContext); // Достаю данные из контекста
+	const dispatch = useDispatch();
 
 	const [valueInput, setValueInput] = React.useState(''); // Локальный стейт для вводимых данных в инпут
 	// useCallback позволяет сохранить функцию и не перевызывать ее
 	const updateSearchValue = useCallback(
 		debounce((str) => {
-			setSearchValue(str);
+			dispatch(setSearchValue(str));
 		}, 500),
 		[] // это позволяет создать ф-ю только раз, при первом рендере
 	);
 
+	// Изменение value при вводе в поле input
 	const onChangeInput = (event) => {
 		setValueInput(event.target.value);
 		updateSearchValue(event.target.value);
@@ -26,7 +28,7 @@ const Search = () => {
 	const inputRef = React.useRef();
 	const onClickClear = () => {
 		setValueInput('');
-		setSearchValue('');
+		dispatch(setSearchValue(''));
 		inputRef.current.focus(); // фокус после удаления
 	};
 

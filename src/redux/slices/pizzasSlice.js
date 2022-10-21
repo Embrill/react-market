@@ -46,7 +46,6 @@ const pizzasSlice = createSlice({
 		[fetchPizzas.rejected]: (state, action) => {
 			state.status = 'error';
 			state.items = [];
-			alert('Произошла ошибка при получении данных');
 			console.error('Произошла ошибка при получении данных');
 		},
 	},

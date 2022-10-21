@@ -8,31 +8,22 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Cart from './pages/Cart';
-
-// Контекст
-export const SearchContext = React.createContext('');
+import FullPizza from './pages/FullPizza';
+import MainLayout from './layouts/MainLayout';
 
 // Render
 function App() {
-	// state хранения вводимых данных
-	// в инпут поиска, также необходимо для контекста
-	const [searchValue, setSearchValue] = React.useState('');
-
-	return (
-		// Контекст
-		<SearchContext.Provider value={{ searchValue, setSearchValue }}>
-			<div className="wrapper">
-				<Header />
-				<div className="content">
-					<Routes>
-						<Route path="/" element={<Home />} /> {/* Главная страница */}
-						<Route path="/cart" element={<Cart />} /> {/* Корзина */}
-						<Route path="*" element={<NotFound />} /> {/* Ошибка */}
-					</Routes>
-				</div>
-			</div>
-		</SearchContext.Provider>
-	);
+  return (
+    <Routes>
+      {/* Главный роут, который не ререндерится */}
+      <Route path="/" element={<MainLayout />}>
+        <Route path="" element={<Home />} /> {/* Главная страница */}
+        <Route path="cart" element={<Cart />} /> {/* Корзина */}
+        <Route path="pizza/:id" element={<FullPizza />} /> {/* ":" - означает что-то динамическое */}
+        <Route path="*" element={<NotFound />} /> {/* Ошибка */}
+      </Route>
+    </Routes>
+  );
 }
 
 export default App;
