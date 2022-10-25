@@ -1,0 +1,80 @@
+import React, { useCallback } from 'react';
+// интервальное обновление страницы при поиске
+// При отсутствии типизации - навестись на библиотеку и установить зависимости
+import debounce from 'lodash.debounce';
+
+import styles from './Search.module.scss';
+
+import { useDispatch } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
+
+const Search: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const [valueInput, setValueInput] = React.useState(''); // Локальный стейт для вводимых данных в инпут
+  // useCallback позволяет сохранить функцию и не перевызывать ее
+  const updateSearchValue = useCallback(
+    debounce((str) => {
+      dispatch(setSearchValue(str));
+    }, 500),
+    [] // это позволяет создать ф-ю только раз, при первом рендере
+  );
+
+  // Изменение value при вводе в поле input
+  const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValueInput(event.target.value);
+    updateSearchValue(event.target.value);
+  };
+
+  // Очистка поля
+  const inputRef = React.useRef<HTMLInputElement>(null); // null - если ничего не хотим передавать
+  const onClickClear = (event: React.MouseEvent<SVGSVGElement>) => {
+    setValueInput('');
+    dispatch(setSearchValue(''));
+    inputRef.current?.focus(); // фокус после удаления | ?. - опциональный оператор
+  };
+
+  return (
+    <div className={styles.root}>
+      {/* Лупа */}
+      <svg
+        className={styles.searchIcon}
+        enableBackground="new 0 0 32 32"
+        id="Glyph"
+        version="1.1"
+        viewBox="0 0 32 32"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M27.414,24.586l-5.077-5.077C23.386,17.928,24,16.035,24,14c0-5.514-4.486-10-10-10S4,8.486,4,14  s4.486,10,10,10c2.035,0,3.928-0.614,5.509-1.663l5.077,5.077c0.78,0.781,2.048,0.781,2.828,0  C28.195,26.633,28.195,25.367,27.414,24.586z M7,14c0-3.86,3.14-7,7-7s7,3.14,7,7s-3.14,7-7,7S7,17.86,7,14z"
+          id="XMLID_223_"
+        />
+      </svg>
+
+      <input
+        ref={inputRef}
+        value={valueInput}
+        onChange={onChangeInput} // React.ChangeEvent<HTMLInputElement> - тип
+        className={styles.input}
+        placeholder="Поиск пиццы..."
+      />
+
+      {/* Крестик */}
+      {valueInput && (
+        <svg
+          onClick={onClickClear} // React.MouseEvent<SVGSVGElement>
+          className={styles.clearIcon}
+          height="48"
+          viewBox="0 0 48 48"
+          width="48"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M38 12.83L35.17 10 24 21.17 12.83 10 10 12.83 21.17 24 10 35.17 12.83 38 24 26.83 35.17 38 38 35.17 26.83 24z" />
+          <path d="M0 0h48v48H0z" fill="none" />
+        </svg>
+      )}
+    </div>
+  );
+};
+
+export default Search;

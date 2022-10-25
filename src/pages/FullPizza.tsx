@@ -4,12 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 // Типизируем FullPizza, как тип: React.FC | FC - functional component
 const FullPizza: React.FC = () => {
-
   const [pizza, setPizza] = React.useState<{
     // Добавляем "<>" и внутрь описываем вложенные свойства и их типы
-    imageUrl: string,
-    title: string,
-    price: number,
+    imageUrl: string;
+    title: string;
+    price: number;
   }>();
 
   const { id } = useParams(); // Используется для назначения id
@@ -34,7 +33,7 @@ const FullPizza: React.FC = () => {
   // Если пиццы еще грузится
   if (!pizza) {
     // Возвращаем фрагмент строчки, т.к. этого требует TS
-    return <h2>Загрузка...</h2>
+    return <h2>Загрузка...</h2>;
   }
   // После проверки  if (!pizza) - pizza в любом случае будет {объектом}
   // Так как выбор с undefined уже отсекается проверкой

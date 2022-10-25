@@ -5,17 +5,26 @@ import Sort from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-import { Link } from 'react-router-dom';
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { selectorFilter, setCategoryId, setPageCurrent } from '../redux/slices/filterSlice';
 import { fetchPizzas, selectorPizzasData } from '../redux/slices/pizzasSlice';
 
-const Home = () => {
+const Home: React.FC = () => {
   // Данные из хранилища REDUX
   const { categoryId, sortSlice, pageCurrent, sortOrder, searchValue } = useSelector(selectorFilter);
   const { items, status } = useSelector(selectorPizzasData);
   const dispatch = useDispatch();
+
+  // Смена категорий
+  const onChaneCategory = (idx: number) => {
+    dispatch(setCategoryId(idx));
+  };
+
+  // Смена страниц
+  const onChangePage = (number: number) => {
+    dispatch(setPageCurrent(number));
+  };
 
   // Запрос на BACK END
   React.useEffect(() => {
@@ -28,6 +37,7 @@ const Home = () => {
       // процесса загрузки и конечного завершения запроса
       // Вытаскиваем fetchPizzas из redux и передаем сюда
       dispatch(
+        // @ts-ignore
         fetchPizzas({
           categoryUrl,
           ascOrDescUrl,
@@ -42,25 +52,23 @@ const Home = () => {
   // /.Запрос на BACK END
 
   // Маппинг пиц с возможностью просмотра подробной информации при клике на них
-  const dataPizzasComplete = items.map((item, index) => (
-    <Link key={index} to={`/pizza/${item.id}`}>
-      {/* item.id === const { id } = useParams() в FullPizza.jsx */}
-      <PizzaBlock // В key можно передавать index, если index статичный
-        title={item.title}
-        price={item.price}
-        imageUrl={item.imageUrl}
-        sizes={item.sizes}
-        typesPizza={item.types}
-        id={item.id}
-      />
-    </Link>
+  const dataPizzasComplete = items.map((item: any, index: number) => (
+    <PizzaBlock // В key можно передавать index, если index статичный
+      key={index}
+      title={item.title}
+      price={item.price}
+      imageUrl={item.imageUrl}
+      sizes={item.sizes}
+      typesPizza={item.types}
+      id={item.id}
+    />
   ));
   const skeletons = [...new Array(4)].map((_, id) => <Skeleton key={id} />);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories categoryActiveId={categoryId} onChangeCategory={(id) => dispatch(setCategoryId(id))} />
+        <Categories categoryActiveId={categoryId} onChangeCategory={onChaneCategory} />
         <Sort />
       </div>
 
@@ -83,7 +91,7 @@ const Home = () => {
       )}
 
       {/* Пагинация */}
-      <Pagination pageCurrent={pageCurrent} onChangePage={(number) => dispatch(setPageCurrent(number))} />
+      <Pagination pageCurrent={pageCurrent} onChangePage={onChangePage} />
     </div>
   );
 };

@@ -6,11 +6,11 @@ import logoSvg from '../assets/img/pizza-logo.svg';
 import Search from './Search';
 import { selectorCart } from '../redux/slices/cartSlice';
 
-const Header = () => {
+const Header: React.FC = () => {
   const { items, totalPrice } = useSelector(selectorCart); // selectorCart - селектор для сокращения кода
   const location = useLocation(); // Для динамического изменение пути window.location.path
 
-  const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
 
   return (
     <div className="header">
