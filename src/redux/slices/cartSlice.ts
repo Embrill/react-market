@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../store';
 
 type CartItem = {
   title: string;
@@ -8,17 +9,17 @@ type CartItem = {
   sizes: number;
   type: string;
   id: string;
-}
+};
 
 // interface типизирует только объект - это одно и тоже, что и type
 // interface может иметь вложенности типов, как "items: CartItem[]"
 interface CartSliceState {
-  totalPrice: number,
-  items: CartItem[],
+  totalPrice: number;
+  items: CartItem[];
 }
 
 // Состояние для сортировки
-const initialState:CartSliceState = {
+const initialState: CartSliceState = {
   totalPrice: 0,
   items: [],
 };
@@ -30,7 +31,7 @@ const cartSlice = createSlice({
   // filterSlice.actions
   reducers: {
     // Добавление товара в корзину
-    addItem: (state, action) => {
+    addItem: (state, action: PayloadAction<CartItem>) => {
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
       // При дублировании товара, то добавляется count, а не дублируется новый item
@@ -77,7 +78,7 @@ const cartSlice = createSlice({
 });
 
 // Селектор, который помогает нам сокращать код - is the best practice
-export const selectorCart = (state) => state.cartSlice;
+export const selectorCart = (state: RootState) => state.cartSlice;
 
 export const { addItem, removeItem, clearItems, minusItem } = cartSlice.actions;
 

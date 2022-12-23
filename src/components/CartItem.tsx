@@ -19,6 +19,12 @@ const CartItem: React.FC<CartItemProps> = ({ title, price, count, imageUrl, size
     dispatch(
       addItem({
         id,
+        title: '',
+        price: 0,
+        count: 0,
+        imageUrl: '',
+        sizes: 0,
+        type: '',
       })
     );
   };

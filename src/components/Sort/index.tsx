@@ -8,7 +8,7 @@ import { selectorFilter, setSort, setSortOrder } from '../../redux/slices/filter
 // 	path: Node[]
 // }
 
-type SortListItem = {
+export type SortListItem = {
   name: string;
   sortProperty: string;
 };
@@ -46,6 +46,7 @@ const Sort = () => {
 
       // composedPath() >> .path
       sortRef.current && !event.composedPath().includes(sortRef.current) && setVisibleSortPopup(false);
+      console.log(sortRef.current);
     };
 
     // Прослушка клика на бади с функцией handleClickOutside

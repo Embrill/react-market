@@ -32,6 +32,7 @@ const Search: React.FC = () => {
     setValueInput('');
     dispatch(setSearchValue(''));
     inputRef.current?.focus(); // фокус после удаления | ?. - опциональный оператор
+    console.log(inputRef);
   };
 
   return (
