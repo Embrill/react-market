@@ -1,5 +1,5 @@
 import { RootState } from './../store';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { SortListItem } from '../../components/Sort';
 
@@ -13,17 +13,32 @@ interface IParams {
   sortSlice: SortListItem;
 }
 
+// Также есть вариант типизациии, сделав createAsyncThunk<PizzaItems[], IParams>('pizza/fetchPizzasStatus', ...
 export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params: IParams, thunkAPI) => {
   const { categoryUrl, ascOrDescUrl, searchUrl, pageCurrent, sortSlice } = params;
-  const response = await axios.get(
+  const { data } = await axios.get<PizzaItems[]>(
     `https://633e73820dbc3309f3b5d032.mockapi.io/photo_collections?page=${pageCurrent}&limit=4&${categoryUrl}&sortBy=${sortSlice.sortProperty}&order=${ascOrDescUrl}${searchUrl}`
   );
 
-  return response.data;
+  return data; // as PizzaItems[] - как другой вариант типизации
 });
 
+type PizzaItems = {
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  typesPizza: number[];
+  id: string;
+  rating: number;
+};
+interface PizzaSliceState {
+  items: PizzaItems[];
+  status: 'loading' | 'succes' | 'error';
+}
+
 // Состояния
-const initialState = {
+const initialState: PizzaSliceState = {
   items: [],
   status: 'loading', // loading | succes | error
 };
@@ -33,7 +48,7 @@ const pizzasSlice = createSlice({
   initialState: initialState,
 
   reducers: {
-    setItems: (state, action) => {
+    setItems: (state, action: PayloadAction<PizzaItems[]>) => {
       state.items = action.payload;
     },
   },
@@ -48,7 +63,7 @@ const pizzasSlice = createSlice({
       state.status = 'loading';
     });
     // Запрос fetchPizzas, если упешный запрос, то (fulfilled)
-    builder.addCase(fetchPizzas.fulfilled, (state, action) => {
+    builder.addCase(fetchPizzas.fulfilled, (state, action: PayloadAction<PizzaItems[]>) => {
       state.items = action.payload;
       state.status = 'succes';
     });

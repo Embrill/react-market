@@ -10,7 +10,7 @@ import { selectorFilter, setSort, setSortOrder } from '../../redux/slices/filter
 
 export type SortListItem = {
   name: string;
-  sortProperty: string;
+  sortProperty: 'rating' | 'price' | 'title';
 };
 
 // :SortListItem[] - для типизации

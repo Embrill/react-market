@@ -61,6 +61,7 @@ const Home: React.FC = () => {
       sizes={item.sizes}
       typesPizza={item.types}
       id={item.id}
+      rating={item.rating}
     />
   ));
   const skeletons = [...new Array(4)].map((_, id) => <Skeleton key={id} />);

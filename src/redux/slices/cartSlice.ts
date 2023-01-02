@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-type CartItem = {
+export type CartItem = {
   title: string;
   price: number;
   count: number;
@@ -50,7 +50,7 @@ const cartSlice = createSlice({
       }, 0);
     },
 
-    minusItem: (state, action) => {
+    minusItem: (state, action: PayloadAction<string>) => {
       const findItem = state.items.find((obj) => obj.id === action.payload);
       if (findItem) {
         findItem.count--;
@@ -61,7 +61,7 @@ const cartSlice = createSlice({
       }
     },
 
-    removeItem: (state, action) => {
+    removeItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((obj) => obj.id !== action.payload);
 
       // Вычисление суммы при удалении КАТЕГОРИИ товара из корзины
