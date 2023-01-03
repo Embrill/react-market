@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addItem, CartItem } from '../../redux/slices/cartSlice';
+import { addItem, CartItemType } from '../../redux/slices/cartSlice';
 import { RootState } from '../../redux/store';
 
 // Тип пиццы
@@ -28,7 +28,7 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes, 
   const adddedCount = cartItem ? cartItem.count : 0;
   // Добавление товара в корзину
   const onClickAdd = () => {
-    const item: CartItem = {
+    const item: CartItemType = {
       id,
       title,
       price,

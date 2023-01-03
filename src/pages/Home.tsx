@@ -6,15 +6,16 @@ import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 // Redux
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectorFilter, setCategoryId, setPageCurrent } from '../redux/slices/filterSlice';
 import { fetchPizzas, selectorPizzasData } from '../redux/slices/pizzasSlice';
+import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
   // Данные из хранилища REDUX
   const { categoryId, sortSlice, pageCurrent, sortOrder, searchValue } = useSelector(selectorFilter);
   const { items, status } = useSelector(selectorPizzasData);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // Смена категорий
   const onChaneCategory = (idx: number) => {
@@ -37,7 +38,6 @@ const Home: React.FC = () => {
       // процесса загрузки и конечного завершения запроса
       // Вытаскиваем fetchPizzas из redux и передаем сюда
       dispatch(
-        // @ts-ignore
         fetchPizzas({
           categoryUrl,
           ascOrDescUrl,

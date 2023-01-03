@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Sort.module.scss';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { selectorFilter, setSort, setSortOrder } from '../../redux/slices/filterSlice';
+import { selectorFilter, setSort, setSortOrder, SortPropertyEnum } from '../../redux/slices/filterSlice';
 
 // type PopupClick = React.MouseEvent<HTMLBodyElement> & {
 // 	path: Node[]
@@ -10,14 +10,14 @@ import { selectorFilter, setSort, setSortOrder } from '../../redux/slices/filter
 
 export type SortListItem = {
   name: string;
-  sortProperty: 'rating' | 'price' | 'title';
+  sortProperty: SortPropertyEnum;
 };
 
 // :SortListItem[] - для типизации
 export const sortList: SortListItem[] = [
-  { name: 'Популярности', sortProperty: 'rating' },
-  { name: 'Цене', sortProperty: 'price' },
-  { name: 'Алфавиту', sortProperty: 'title' },
+  { name: 'Популярности', sortProperty: SortPropertyEnum.RATING },
+  { name: 'Цене', sortProperty: SortPropertyEnum.PRICE },
+  { name: 'Алфавиту', sortProperty: SortPropertyEnum.TITLE },
 ];
 
 const Sort = () => {

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-export type CartItem = {
+export type CartItemType = {
   title: string;
   price: number;
   count: number;
@@ -15,7 +15,7 @@ export type CartItem = {
 // interface может иметь вложенности типов, как "items: CartItem[]"
 interface CartSliceState {
   totalPrice: number;
-  items: CartItem[];
+  items: CartItemType[];
 }
 
 // Состояние для сортировки
@@ -31,7 +31,7 @@ const cartSlice = createSlice({
   // filterSlice.actions
   reducers: {
     // Добавление товара в корзину
-    addItem: (state, action: PayloadAction<CartItem>) => {
+    addItem: (state, action: PayloadAction<CartItemType>) => {
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
       // При дублировании товара, то добавляется count, а не дублируется новый item

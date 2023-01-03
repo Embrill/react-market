@@ -32,15 +32,23 @@ type PizzaItems = {
   id: string;
   rating: number;
 };
+
+// Специальный объект со значениями
+export enum StatusEnum {
+  LOADING = 'loading',
+  SUCCES = 'succes',
+  ERROR = 'error',
+}
+
 interface PizzaSliceState {
   items: PizzaItems[];
-  status: 'loading' | 'succes' | 'error';
+  status: StatusEnum;
 }
 
 // Состояния
 const initialState: PizzaSliceState = {
   items: [],
-  status: 'loading', // loading | succes | error
+  status: StatusEnum.LOADING, // loading | succes | error
 };
 
 const pizzasSlice = createSlice({
@@ -60,16 +68,16 @@ const pizzasSlice = createSlice({
     // Если идет процес отправки на бекенд
     builder.addCase(fetchPizzas.pending, (state, action) => {
       state.items = [];
-      state.status = 'loading';
+      state.status = StatusEnum.LOADING;
     });
     // Запрос fetchPizzas, если упешный запрос, то (fulfilled)
     builder.addCase(fetchPizzas.fulfilled, (state, action: PayloadAction<PizzaItems[]>) => {
       state.items = action.payload;
-      state.status = 'succes';
+      state.status = StatusEnum.SUCCES;
     });
     // Если произошла ошибка
     builder.addCase(fetchPizzas.rejected, (state, action) => {
-      state.status = 'error';
+      state.status = StatusEnum.ERROR;
       state.items = [];
       console.error('Произошла ошибка при получении данных');
     });
