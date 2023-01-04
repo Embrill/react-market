@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './Sort.module.scss';
+import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate'; // Для удаления лишних перерисовок компонента
 
 import { useSelector, useDispatch } from 'react-redux';
-import { selectorFilter, setSort, setSortOrder, SortPropertyEnum } from '../../redux/slices/filterSlice';
+import { selectorFilter, setSort, setSortOrder, SortPropertyEnum, TSortValues } from '../../redux/slices/filterSlice';
 
 // type PopupClick = React.MouseEvent<HTMLBodyElement> & {
 // 	path: Node[]
@@ -20,9 +21,16 @@ export const sortList: SortListItem[] = [
   { name: 'Алфавиту', sortProperty: SortPropertyEnum.TITLE },
 ];
 
-const Sort = () => {
+interface ISortProps {
+  valueSort: TSortValues;
+  sortOrder: boolean;
+}
+
+const Sort: React.FC<ISortProps> = React.memo(({ valueSort, sortOrder }) => {
+  useWhyDidYouUpdate('Sort', { valueSort, sortOrder }); // Для отслеживания лишних перерисовок
+
   const dispatch = useDispatch();
-  const { sortSlice, sortOrder } = useSelector(selectorFilter);
+
   // null - Значение
   // HTMLDivElement - Тип
   const sortRef = React.useRef<HTMLDivElement>(null);
@@ -71,7 +79,7 @@ const Sort = () => {
           </svg>
         </div>
         <b>Сортировать по:</b>
-        <span onClick={() => setVisibleSortPopup(!visibleSortPopup)}>{sortSlice.name}</span>
+        <span onClick={() => setVisibleSortPopup(!visibleSortPopup)}>{valueSort.name}</span>
       </div>
 
       {/* popup */}
@@ -82,7 +90,7 @@ const Sort = () => {
               <li
                 key={index}
                 onClick={() => setSortAndClose(obj)}
-                className={sortSlice.sortProperty === obj.sortProperty ? 'active' : ''}
+                className={valueSort.sortProperty === obj.sortProperty ? 'active' : ''}
               >
                 {obj.name}
               </li>
@@ -92,6 +100,6 @@ const Sort = () => {
       )}
     </div>
   );
-};
+});
 
 export default Sort;

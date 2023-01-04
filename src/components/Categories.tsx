@@ -9,7 +9,8 @@ type CategoriesProps = {
   // () => void - типизация ф-и
 };
 
-const Categories: React.FC<CategoriesProps> = ({ categoryActiveId, onChangeCategory }) => {
+// React.memo
+const Categories: React.FC<CategoriesProps> = React.memo(({ categoryActiveId, onChangeCategory }) => {
   return (
     <div className="categories">
       <ul>
@@ -25,6 +26,6 @@ const Categories: React.FC<CategoriesProps> = ({ categoryActiveId, onChangeCateg
       </ul>
     </div>
   );
-};
+});
 
 export default Categories;

@@ -10,14 +10,14 @@ interface IParams {
   ascOrDescUrl: string;
   searchUrl: string;
   pageCurrent: number;
-  sortSlice: SortListItem;
+  sortValues: SortListItem;
 }
 
 // Также есть вариант типизациии, сделав createAsyncThunk<PizzaItems[], IParams>('pizza/fetchPizzasStatus', ...
 export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params: IParams, thunkAPI) => {
-  const { categoryUrl, ascOrDescUrl, searchUrl, pageCurrent, sortSlice } = params;
+  const { categoryUrl, ascOrDescUrl, searchUrl, pageCurrent, sortValues } = params;
   const { data } = await axios.get<PizzaItems[]>(
-    `https://633e73820dbc3309f3b5d032.mockapi.io/photo_collections?page=${pageCurrent}&limit=4&${categoryUrl}&sortBy=${sortSlice.sortProperty}&order=${ascOrDescUrl}${searchUrl}`
+    `https://633e73820dbc3309f3b5d032.mockapi.io/photo_collections?page=${pageCurrent}&limit=4&${categoryUrl}&sortBy=${sortValues.sortProperty}&order=${ascOrDescUrl}${searchUrl}`
   );
 
   return data; // as PizzaItems[] - как другой вариант типизации

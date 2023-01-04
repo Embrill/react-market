@@ -13,14 +13,14 @@ import { useAppDispatch } from '../redux/store';
 
 const Home: React.FC = () => {
   // Данные из хранилища REDUX
-  const { categoryId, sortSlice, pageCurrent, sortOrder, searchValue } = useSelector(selectorFilter);
   const { items, status } = useSelector(selectorPizzasData);
+  const { categoryId, sortValues, pageCurrent, sortOrder, searchValue } = useSelector(selectorFilter);
   const dispatch = useAppDispatch();
 
   // Смена категорий
-  const onChaneCategory = (idx: number) => {
+  const onChaneCategory = React.useCallback((idx: number) => {
     dispatch(setCategoryId(idx));
-  };
+  }, []); // Ф-я создается при первом рендере и не делает лишнего перерендера
 
   // Смена страниц
   const onChangePage = (number: number) => {
@@ -43,12 +43,12 @@ const Home: React.FC = () => {
           ascOrDescUrl,
           searchUrl,
           pageCurrent,
-          sortSlice,
+          sortValues,
         })
       );
     };
     getPizzas();
-  }, [categoryId, dispatch, pageCurrent, searchValue, sortSlice, sortSlice.sortProperty, sortOrder]);
+  }, [categoryId, dispatch, pageCurrent, searchValue, sortValues, sortValues.sortProperty, sortOrder]);
   // /.Запрос на BACK END
 
   // Маппинг пиц с возможностью просмотра подробной информации при клике на них
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories categoryActiveId={categoryId} onChangeCategory={onChaneCategory} />
-        <Sort />
+        <Sort valueSort={sortValues} sortOrder={sortOrder} />
       </div>
 
       <h2 className="content__title">Все пиццы</h2>

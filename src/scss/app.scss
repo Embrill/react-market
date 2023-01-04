@@ -221,6 +221,25 @@ body {
             display: none;
           }
         }
+        &--disabled {
+          border-color: #dddddd;
+
+          &:hover {
+            background: transparent;
+
+            svg path {
+              fill: #dddddd;
+            }
+          }
+
+          &:active {
+            transform: none;
+          }
+
+          svg path {
+            fill: #dddddd;
+          }
+        }
       }
 
       b {

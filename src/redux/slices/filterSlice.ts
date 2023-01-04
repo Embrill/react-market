@@ -7,14 +7,14 @@ export enum SortPropertyEnum {
   TITLE = 'title',
 }
 
-type SortSlice = {
+export type TSortValues = {
   name: string;
   sortProperty: SortPropertyEnum;
 };
 interface FilterSliceState {
   searchValue: string;
   categoryId: number;
-  sortSlice: SortSlice;
+  sortValues: TSortValues;
   pageCurrent: number;
   sortOrder: boolean;
 }
@@ -23,7 +23,7 @@ interface FilterSliceState {
 const initialState: FilterSliceState = {
   searchValue: '',
   categoryId: 0,
-  sortSlice: {
+  sortValues: {
     name: 'Популярности',
     sortProperty: SortPropertyEnum.RATING,
   },
@@ -44,8 +44,8 @@ const filterSlice = createSlice({
     setSearchValue: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
-    setSort: (state, action: PayloadAction<SortSlice>) => {
-      state.sortSlice = action.payload;
+    setSort: (state, action: PayloadAction<TSortValues>) => {
+      state.sortValues = action.payload;
     },
     setPageCurrent: (state, action: PayloadAction<number>) => {
       state.pageCurrent = action.payload;
