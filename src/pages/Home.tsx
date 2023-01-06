@@ -1,10 +1,7 @@
 import React from 'react';
 
-import Categories from '../components/Categories';
-import Sort from '../components/Sort';
-import PizzaBlock from '../components/PizzaBlock';
-import Skeleton from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination';
+import { Pagination, Skeleton, Categories, Sort, PizzaBlock } from '../components';
+
 // Redux
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../redux/store';
