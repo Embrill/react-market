@@ -2,8 +2,9 @@ import React from 'react';
 import styles from './Sort.module.scss';
 import useWhyDidYouUpdate from 'ahooks/lib/useWhyDidYouUpdate'; // Для удаления лишних перерисовок компонента
 
-import { useSelector, useDispatch } from 'react-redux';
-import { selectorFilter, setSort, setSortOrder, SortPropertyEnum, TSortValues } from '../../redux/slices/filterSlice';
+import { useDispatch } from 'react-redux';
+import { SortPropertyEnum, TSortValues } from '../../redux/filter/types';
+import { setSort, setSortOrder } from '../../redux/filter/slice';
 
 // type PopupClick = React.MouseEvent<HTMLBodyElement> & {
 // 	path: Node[]

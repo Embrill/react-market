@@ -4,13 +4,18 @@ import { useSelector } from 'react-redux';
 
 import logoSvg from '../assets/img/pizza-logo.svg';
 import Search from './Search';
-import { selectorCart } from '../redux/slices/cartSlice';
+import { selectorCart } from '../redux/cart/selectors';
 
 const Header: React.FC = () => {
   const { items, totalPrice } = useSelector(selectorCart); // selectorCart - селектор для сокращения кода
   const location = useLocation(); // Для динамического изменение пути window.location.path
 
   const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
+
+  // React.useEffect(() => {
+  //   const jsonItems = JSON.stringify(items);
+  //   localStorage.setItem('cart', jsonItems);
+  // }, [items]);
 
   return (
     <div className="header">

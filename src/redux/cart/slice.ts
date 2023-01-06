@@ -1,22 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
-
-export type CartItemType = {
-  title: string;
-  price: number;
-  count: number;
-  imageUrl: string;
-  sizes: number;
-  type: string;
-  id: string;
-};
-
-// interface типизирует только объект - это одно и тоже, что и type
-// interface может иметь вложенности типов, как "items: CartItem[]"
-interface CartSliceState {
-  totalPrice: number;
-  items: CartItemType[];
-}
+import { CartItemType, CartSliceState } from './types';
 
 // Состояние для сортировки
 const initialState: CartSliceState = {
@@ -76,9 +59,6 @@ const cartSlice = createSlice({
     },
   },
 });
-
-// Селектор, который помогает нам сокращать код - is the best practice
-export const selectorCart = (state: RootState) => state.cartSlice;
 
 export const { addItem, removeItem, clearItems, minusItem } = cartSlice.actions;
 

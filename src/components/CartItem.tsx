@@ -1,7 +1,7 @@
 import React from 'react';
-import { addItem, minusItem, removeItem } from '../redux/slices/cartSlice';
 import { useAppDispatch } from '../redux/store';
 import clsx from 'clsx'; // Для удобства миксования classNames
+import { addItem, minusItem, removeItem } from '../redux/cart/slice';
 
 type CartItemProps = {
   title: string;

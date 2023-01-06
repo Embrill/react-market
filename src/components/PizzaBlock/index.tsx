@@ -2,7 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { addItem, CartItemType } from '../../redux/slices/cartSlice';
+import { addItem } from '../../redux/cart/slice';
+import { CartItemType } from '../../redux/cart/types';
 import { RootState } from '../../redux/store';
 
 // Тип пиццы
@@ -20,7 +21,9 @@ type PizzaBlockProps = {
 
 const PizzaBlock: React.FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes, typesPizza, id }) => {
   const dispatch = useDispatch();
-  const cartItem = useSelector((state: RootState) => state.cartSlice.items.find((obj) => obj.id === id));
+  const cartItem = useSelector((state: RootState) =>
+    state.persistedReducer.cartSlice.items.find((obj) => obj.id === id)
+  );
   const [activeTypeId, setActiveTypeId] = useState(0);
   // Размер пиццы
   const [activeSizeId, setActiveSizeId] = useState(0);
