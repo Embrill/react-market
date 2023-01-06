@@ -12,3 +12,6 @@
 - Lodash.Debounce
 - Code Splitting, React Loadable, useWhyDidYouUpdate
 - И другие...
+
+## Превью
+<img src="https://imgur.com/zPcSH9X.png" width="512px"/>
